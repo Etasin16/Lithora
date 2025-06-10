@@ -318,7 +318,6 @@ elif st.session_state.page == "cia":
                     "CN (CaO+Na2O)": cn_vals,
                     "K (K2O)": k_vals,
                     "A (Al2O3)": a_vals
-                    "%CN":
                 })
                 st.subheader("📄 Data Table")
                 st.dataframe(df)
