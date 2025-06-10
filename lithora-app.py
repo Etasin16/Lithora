@@ -12,7 +12,7 @@ def go_home():
     st.session_state.page = "home"
 
 def go_qfl():
-    st.session_state.page = "qfl"
+    st.session_state.page = "qft-ternary-model.py"
 
 def go_cia():
     st.session_state.page = "cia"
