@@ -188,13 +188,18 @@ elif st.session_state.page == "cia":
     st.button("⬅️ Back to Home", on_click=go_home)
 
     st.markdown("Upload oxide data to compute the CIA index and generate alteration plots.")
-    import math
     import pandas as pd
+    import math
+    import base64
+    from io import BytesIO
+    from IPython.display import SVG, display
     
+    # --- Set page config (must be first Streamlit command) ---
+    st.set_page_config(page_title="Lithora – CIA Ternary", layout="centered")
+    
+    # --- Helper functions ---
     def ternary_to_xy(a, cn, k):
         total = a + cn + k
-        if total == 0:
-            return 0, 0
         a /= total
         cn /= total
         k /= total
@@ -202,29 +207,25 @@ elif st.session_state.page == "cia":
         y = (math.sqrt(3) / 2) * cn
         return x, y
     
-    def generate_svg(points):
-        width = 800
-        height = 520
-        padding = 150
-        scale = 400
+    def svg_point(x, y, width=800, height=520, padding=150, scale=400):
+        px = padding + x * scale
+        py = height - (padding + y * scale)
+        return px, py
     
-        def svg_point(x, y):
-            px = padding + x * scale
-            py = height - (padding + y * scale)
-            return px, py
+    def generate_svg(points, marker="circle", marker_color="black", add_labels=True):
+        width, height, padding, scale = 800, 620, 150, 400
+        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">
+        <rect width="100%" height="100%" fill="white"/>'
     
-        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">'
-        svg += '<rect width="100%" height="100%" fill="white"/>'
-    
-        # Draw main triangle
+        # Triangle outline
         tri_coords = [(0.0, 0.0), (1.0, 0.0), (0.5, math.sqrt(3)/2)]
         svg += '<polygon points="{}" fill="none" stroke="black" stroke-width="2"/>'.format(
-            ' '.join(f"{svg_point(x, y)[0]},{svg_point(x, y)[1]}" for x, y in tri_coords)
-        )
+            ' '.join(f"{svg_point(x, y)[0]},{svg_point(x, y)[1]}" for x, y in tri_coords))
     
         # Grid lines
         for i in range(1, 10):
             frac = i / 10
+    
             ax, ay = ternary_to_xy(frac * 100, 100 - frac * 100, 0)
             bx, by = ternary_to_xy(frac * 100, 0, 100 - frac * 100)
             svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
@@ -244,7 +245,7 @@ elif st.session_state.page == "cia":
             <text x="{svg_point(1.0, 0.0)[0] + 10}" y="{svg_point(1.0, 0.0)[1] + 5}" text-anchor="start" font-size="16">K (K₂O)</text>
         '''
     
-        # Vertical axis ticks
+        # CN axis ticks
         for i in range(0, 11):
             frac = i / 10
             x, y = ternary_to_xy(0, frac * 100, (1 - frac) * 100)
@@ -253,59 +254,79 @@ elif st.session_state.page == "cia":
             svg += f'<text x="{px + 10}" y="{py + 3}" font-size="10" fill="black">{int(frac * 100)}%</text>'
     
         # Plot sample points
-        for label, cn, k, a in points:
+        for row in points:
+            label, cn, k, a = row
             x, y = ternary_to_xy(a, cn, k)
             sx, sy = svg_point(x, y)
-            svg += f'''
-                <circle cx="{sx}" cy="{sy}" r="5" fill="red"/>
-                <text x="{sx + 6}" y="{sy - 6}" font-size="12">{label}</text>
-            '''
+            svg += f'<{marker} cx="{sx}" cy="{sy}" r="5" fill="{marker_color}"/>'
+            if add_labels and label:
+                svg += f'<text x="{sx + 6}" y="{sy - 6}" font-size="12">{label}</text>'
     
         svg += '</svg>'
         return svg
     
-    # Streamlit Interface
+    def get_svg_download_link(svg, filename="plot.svg"):
+        b64 = base64.b64encode(svg.encode()).decode()
+        href = f'<a href="data:image/svg+xml;base64,{b64}" download="{filename}">📥 Download SVG</a>'
+        return href
     
-    st.title("🔺 Chemical Index of Alteration (CIA) Ternary Plot")
-    st.markdown("Enter or upload data for Al₂O₃, CaO + Na₂O (CN), and K₂O to plot on the CIA ternary diagram.")
+    # --- UI ---
+    st.title("🧪 CIA Ternary Plot Tool")
+    st.markdown("Generate a CIA ternary plot using oxide values: Al₂O₃ (A), CaO + Na₂O (CN), and K₂O (K).")
     
-    mode = st.radio("Input Mode", ["Manual Entry", "Upload CSV"])
+    # Sample input section
+    with st.form("cia_form"):
+        use_sample_labels = st.checkbox("🔤 Add Sample Labels")
+        labels = st.text_area("Sample Labels (comma-separated)", disabled=not use_sample_labels)
+        cn_input = st.text_area("CN (CaO + Na₂O)", placeholder="e.g., 30, 20, 10")
+        k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
+        a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
     
-    points = []
+        marker = st.selectbox("Select Marker Type", ["circle", "rect", "triangle"], index=0)
+        color = st.color_picker("Pick Marker Color", "#000000")
     
-    if mode == "Manual Entry":
-        labels = st.text_area("Sample Labels", value="Sample 1, Sample 2")
-        cn_vals = st.text_area("CN (CaO + Na₂O)", value="30, 20")
-        k_vals = st.text_area("K (K₂O)", value="10, 30")
-        a_vals = st.text_area("A (Al₂O₃)", value="60, 50")
+        submit = st.form_submit_button("Generate Plot")
     
-        if st.button("Plot Ternary Diagram"):
-            try:
-                labels_list = [l.strip() for l in labels.split(",")]
-                cn_list = [float(x) for x in cn_vals.split(",")]
-                k_list = [float(x) for x in k_vals.split(",")]
-                a_list = [float(x) for x in a_vals.split(",")]
+    if submit:
+        try:
+            cn_vals = [float(i.strip()) for i in cn_input.split(",")]
+            k_vals = [float(i.strip()) for i in k_input.split(",")]
+            a_vals = [float(i.strip()) for i in a_input.split(",")]
     
-                if not (len(labels_list) == len(cn_list) == len(k_list) == len(a_list)):
-                    st.error("All lists must be the same length.")
-                else:
-                    points = list(zip(labels_list, cn_list, k_list, a_list))
-            except Exception as e:
-                st.error(f"Error parsing input: {e}")
+            if not (len(cn_vals) == len(k_vals) == len(a_vals)):
+                st.error("All input lists must be the same length.")
+            else:
+                label_list = [f"S{i+1}" for i in range(len(cn_vals))]
+                if use_sample_labels and labels:
+                    label_list = [l.strip() for l in labels.split(",")] or label_list
     
-    else:
-        uploaded_file = st.file_uploader("Upload CSV with columns: Label, CN, K, A")
-        if uploaded_file:
-            try:
-                df = pd.read_csv(uploaded_file)
-                points = list(zip(df['Label'], df['CN'], df['K'], df['A']))
-            except Exception as e:
-                st.error(f"Error reading file: {e}")
+                plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
+                svg = generate_svg(plot_data, marker=marker, marker_color=color)
     
-    if points:
-        svg_code = generate_svg(points)
-        st.subheader("🖼️ Ternary Diagram Output")
-        st.components.v1.html(svg_code, height=550, scrolling=False)
+                # Show plot lower
+                st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
+                st.subheader("📈 CIA Ternary Plot")
+                st.image(BytesIO(svg.encode()), caption="CIA Ternary Diagram")
+                st.markdown("</div>", unsafe_allow_html=True)
+    
+                # Data Table
+                df = pd.DataFrame({
+                    "Label": label_list,
+                    "CN (CaO+Na2O)": cn_vals,
+                    "K (K2O)": k_vals,
+                    "A (Al2O3)": a_vals
+                })
+                st.subheader("📄 Data Table")
+                st.dataframe(df)
+                csv = df.to_csv(index=False).encode()
+                st.download_button("📥 Download Data (CSV)", csv, "cia_data.csv", "text/csv")
+    
+                # SVG download link
+                st.markdown(get_svg_download_link(svg), unsafe_allow_html=True)
+    
+        except Exception as e:
+            st.error(f"Error: {e}")
+
     
 
 # --- Page: Rainfall Plot ---
