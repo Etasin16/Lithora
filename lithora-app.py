@@ -218,7 +218,7 @@ elif st.session_state.page == "cia":
         )
     
         # Triangle outline
-        tri_coords = [(0.0, -0.5), (1.0, -0.5), (0.5, (math.sqrt(3)/2)-0.5)]
+        tri_coords = [(0.0, -0.4), (1.0, -0.4), (0.5, 0.9-0.4)]
         svg += '<polygon points="{}" fill="none" stroke="black" stroke-width="2"/>'.format(
             ' '.join(f"{svg_point(x, y)[0]},{svg_point(x, y)[1]}" for x, y in tri_coords))
     
