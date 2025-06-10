@@ -287,7 +287,8 @@ elif st.session_state.page == "cia":
     ]
     
     generate_svg(sample_points)
-    display(SVG(filename="ternary_plot.svg"))
+    plot1=display(SVG(filename="ternary_plot.svg"))
+    st.pyplot(plot1)
 
 # --- Page: Rainfall Plot ---
 elif st.session_state.page == "rainfall":
