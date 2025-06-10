@@ -202,7 +202,7 @@ elif st.session_state.page == "cia":
         cn /= total
         k /= total
         x = 0.5 * (2 * k + cn)
-        y = (math.sqrt(3) / 2) * cn
+        y = 0.5 * cn
         return x, y
     
     def svg_point(x, y, width=800, height=520, padding=150, scale=400):
@@ -310,7 +310,7 @@ elif st.session_state.page == "cia":
 
                 st.markdown("</div>", unsafe_allow_html=True)
                 # SVG download link
-                st.download_button("📥 Download Plot",get_svg_download_link(svg),"cia_plot.svg")
+                st.download_button("📥 Download Plot",svg,"cia_plot.svg")
     
                 # Data Table
                 df = pd.DataFrame({
@@ -318,6 +318,7 @@ elif st.session_state.page == "cia":
                     "CN (CaO+Na2O)": cn_vals,
                     "K (K2O)": k_vals,
                     "A (Al2O3)": a_vals
+                    "%CN":
                 })
                 st.subheader("📄 Data Table")
                 st.dataframe(df)
