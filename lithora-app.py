@@ -257,8 +257,7 @@ elif st.session_state.page == "cia":
         for row in points:
             label, cn, k, a = row
             x, y = ternary_to_xy(cn, k,a)
-            s1x, s1y = svg_point(x, y)
-            sx, sy= s1x, s1y
+            sx, sy = svg_point(x, y)
             shape_attrs = f'x="{sx}" y="{sy}" width="10" height="10"' if marker == "rect" else (
                           f'points="{sx},{sy-6} {sx-5},{sy+4} {sx+5},{sy+4}"' if marker == "triangle" else 
                           f'cx="{sx}" cy="{sy}" r="5"')
