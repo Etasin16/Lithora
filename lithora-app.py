@@ -310,7 +310,7 @@ elif st.session_state.page == "cia":
 
                 st.markdown("</div>", unsafe_allow_html=True)
                 # SVG download link
-                st.download_button(get_svg_download_link(svg))
+                st.download_button("📥 Download Plot",get_svg_download_link(svg),"cia_plot.svg")
     
                 # Data Table
                 df = pd.DataFrame({
