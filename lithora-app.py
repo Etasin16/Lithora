@@ -309,6 +309,8 @@ elif st.session_state.page == "cia":
                 components.html(svg, height=650)
 
                 st.markdown("</div>", unsafe_allow_html=True)
+                # SVG download link
+                st.download_button(get_svg_download_link(svg), unsafe_allow_html=True)
     
                 # Data Table
                 df = pd.DataFrame({
@@ -323,7 +325,7 @@ elif st.session_state.page == "cia":
                 st.download_button("📥 Download Data (CSV)", csv, "cia_data.csv", "text/csv")
     
                 # SVG download link
-                st.markdown(get_svg_download_link(svg), unsafe_allow_html=True)
+                st.download_button(get_svg_download_link(svg), unsafe_allow_html=True)
     
         except Exception as e:
             st.error(f"Error: {e}")
