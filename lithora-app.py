@@ -201,8 +201,8 @@ elif st.session_state.page == "cia":
         a /= total
         cn /= total
         k /= total
-        x = 0.5 * (2 * k + cn)
-        y = 0.9 * cn
+        x = 0.1 * (2 * k + cn)
+        y = 0.5 * cn
         return x, y
     
     def svg_point(x, y, width=800, height=520, padding=150, scale=400):
