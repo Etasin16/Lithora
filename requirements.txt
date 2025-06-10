@@ -2,4 +2,4 @@ pandas
 matplotlib
 mpltern
 streamlit
-IPython.display
+
