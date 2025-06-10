@@ -202,7 +202,7 @@ elif st.session_state.page == "cia":
         cn /= total
         k /= total
         x = 0.5 * (2 * k + cn)
-        y = 0.5 * cn
+        y = 0.9 * cn
         return x, y
     
     def svg_point(x, y, width=800, height=520, padding=150, scale=400):
@@ -228,7 +228,7 @@ elif st.session_state.page == "cia":
     
             ax, ay = ternary_to_xy(frac * 100, 100 - frac * 100, 0)
             bx, by = ternary_to_xy(frac * 100, 0, 100 - frac * 100)
-            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
+            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay-0.4)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by-0.4)[1]}" stroke="#ccc"/>'
     
             ax, ay = ternary_to_xy(0, frac * 100, 100 - frac * 100)
             bx, by = ternary_to_xy(100 - frac * 100, frac * 100, 0)
