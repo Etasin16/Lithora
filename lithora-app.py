@@ -35,6 +35,7 @@ if st.session_state.page == "home":
         st.button("🧪 Chemical Index of Alteration (CIA)", on_click=go_cia)
         st.button("☔ Rainfall Intensity Plot", on_click=go_rainfall)
     with col2:
+        st.info("Readme")
         
 # --- Page: QFL Ternary ---
 elif st.session_state.page == "qfl":
