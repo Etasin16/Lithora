@@ -201,7 +201,7 @@ elif st.session_state.page == "cia":
         a /= total
         cn /= total
         k /= total
-        x = 0.1 * (2 * k + cn)
+        x = 0.5 * (4 * k + cn)
         y = 0.5 * cn
         return x, y
     
