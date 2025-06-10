@@ -43,7 +43,6 @@ elif st.session_state.page == "qfl":
     import mpltern
     import io
     
-    st.set_page_config(page_title="Lithora – QFL Ternary Analysis", layout="wide")
     
     # --- UI Header ---
     st.title("🪨 Lithora – QFL Ternary Diagram Tool")
@@ -185,7 +184,6 @@ elif st.session_state.page == "qfl":
 
 # --- Page: CIA Analysis ---
 elif st.session_state.page == "cia":
-    st.set_page_config(page_title="Lithora – CIA Ternary", layout="centered")
     st.title("🧪 Chemical Index of Alteration (CIA)")
     st.button("⬅️ Back to Home", on_click=go_home)
 
@@ -267,7 +265,7 @@ elif st.session_state.page == "cia":
         return svg
     
     # Streamlit Interface
-    st.set_page_config(page_title="Lithora – CIA Ternary", layout="centered")
+    
     st.title("🔺 Chemical Index of Alteration (CIA) Ternary Plot")
     st.markdown("Enter or upload data for Al₂O₃, CaO + Na₂O (CN), and K₂O to plot on the CIA ternary diagram.")
     
