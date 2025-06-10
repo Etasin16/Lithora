@@ -185,6 +185,7 @@ elif st.session_state.page == "qfl":
 
 # --- Page: CIA Analysis ---
 elif st.session_state.page == "cia":
+    st.set_page_config(page_title="Lithora – CIA Ternary", layout="centered")
     st.title("🧪 Chemical Index of Alteration (CIA)")
     st.button("⬅️ Back to Home", on_click=go_home)
 
