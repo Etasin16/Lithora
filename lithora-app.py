@@ -201,7 +201,7 @@ elif st.session_state.page == "cia":
         a /= total
         cn /= total
         k /= total
-        x = 0.5 * (4 * k + cn)
+        x = 0.5 * (2 * k + cn)
         y = 0.5 * cn
         return x, y
     
@@ -232,11 +232,11 @@ elif st.session_state.page == "cia":
     
             ax, ay = ternary_to_xy(0, frac * 100, 100 - frac * 100)
             bx, by = ternary_to_xy(100 - frac * 100, frac * 100, 0)
-            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
+            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay-0.4)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by-0.4)[1]}" stroke="#ccc"/>'
     
             ax, ay = ternary_to_xy(100 - frac * 100, 0, frac * 100)
             bx, by = ternary_to_xy(0, 100 - frac * 100, frac * 100)
-            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
+            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay-0.4)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by-0.4)[1]}" stroke="#ccc"/>'
     
         # Axis labels
         svg += f'''
