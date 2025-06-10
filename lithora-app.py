@@ -309,7 +309,9 @@ elif st.session_state.page == "cia":
                 # Show plot lower
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
                 st.subheader("📈 CIA Ternary Plot")
-                st.image(BytesIO(svg.encode()), caption="CIA Ternary Diagram")
+                import streamlit.components.v1 as components
+                components.html(svg, height=650)
+
                 st.markdown("</div>", unsafe_allow_html=True)
     
                 # Data Table
