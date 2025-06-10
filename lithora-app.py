@@ -29,28 +29,9 @@ if st.session_state.page == "home":
 
     st.subheader("🧭 Choose an analysis module:")
     
-    # Use one wide column
-    col = st.container()
-    
-    with col:
-        st.markdown("### 📌 QFL Ternary Plot")
-        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Ternary_plot_QFL_diagram.svg/400px-Ternary_plot_QFL_diagram.svg.png", width=300)
-        st.markdown("Analyze sandstone composition using Quartz, Feldspar, and Lithics.")
-        st.button("Go to QFL Module", on_click=go_qfl)
-    
-        st.markdown("---")
-    
-        st.markdown("### 🧪 CIA (Chemical Index of Alteration)")
-        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Weathering_CIA_plot.svg/400px-Weathering_CIA_plot.svg.png", width=300)
-        st.markdown("Calculate CIA index from oxide data to evaluate chemical weathering.")
-        st.button("Go to CIA Module", on_click=go_cia)
-    
-        st.markdown("---")
-    
-        st.markdown("### ☔ Rainfall Intensity Plot")
-        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Rainfall_plot.svg/400px-Rainfall_plot.svg.png", width=300)
-        st.markdown("Visualize rainfall trends and intensity over time.")
-        st.button("Go to Rainfall Module", on_click=go_rainfall)
+    st.button("📌 QFL Ternary Plot", on_click=go_qfl)
+    st.button("🧪 Chemical Index of Alteration (CIA)", on_click=go_cia)
+    st.button("☔ Rainfall Intensity Plot", on_click=go_rainfall)
 
 # --- Page: QFL Ternary ---
 elif st.session_state.page == "qfl":
