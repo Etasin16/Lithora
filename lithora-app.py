@@ -242,7 +242,7 @@ elif st.session_state.page == "cia":
         svg += f'''
             <text x="{svg_point(0.5, 0.9)[0]}" y="{svg_point(0.5, 0.9)[1] - 10}" text-anchor="middle" font-size="16">A (Al₂O₃)</text>
             <text x="{svg_point(0.0, 0.0)[0] - 10}" y="{svg_point(0.0, 0.0)[1] + 5}" text-anchor="end" font-size="16">CN (CaO + Na₂O)</text>
-            <text x="{svg_point(1.0, 0.0)[0] + 10}" y="{svg_point(1.0, 0.0)[1] + 5}" text-anchor="start" font-size="16">K (K₂O)</text>
+            <text x="{svg_point(1.0, 0.0)[0] + 10}" y="{svg_point(1.0, 0.0)[1] + 5}" text-anchor="start" font-size="16">     K (K₂O)</text>
         '''
     
         # CN axis ticks
@@ -335,5 +335,5 @@ elif st.session_state.page == "rainfall":
     st.button("⬅️ Back to Home", on_click=go_home)
 
     st.markdown("Upload rainfall data to plot intensity and trend over time.")
-    st.info("🔧 Rainfall logic will go here.")
+    st.info("🔧Comming Soon..")
 
