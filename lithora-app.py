@@ -195,9 +195,6 @@ elif st.session_state.page == "cia":
     from io import BytesIO
     from IPython.display import SVG, display
     
-    # --- Set page config (must be first Streamlit command) ---
-    st.set_page_config(page_title="Lithora – CIA Ternary", layout="centered")
-    
     # --- Helper functions ---
     def ternary_to_xy(a, cn, k):
         total = a + cn + k
