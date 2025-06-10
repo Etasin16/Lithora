@@ -3,5 +3,4 @@ matplotlib
 mpltern
 streamlit
 IPython
-base64
-io
+
