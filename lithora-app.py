@@ -144,7 +144,7 @@ elif st.session_state.page == "qfl":
                 d3 = parse_input_list(l_input)
     
                 if len(d1) != len(d2) or len(d1) != len(d3):
-                    st.error("All input lists must be the same length.")
+                    st.error("Missing Data!! All input lists must be the same length.")
                 else:
                     df_result = compute_qfl(d1, d2, d3)
             except Exception as e:
@@ -279,8 +279,6 @@ elif st.session_state.page == "cia":
     
     # Sample input section
     with st.form("cia_form"):
-        use_sample_labels = st.checkbox("🔤 Add Sample Labels")
-        labels = st.text_area("Sample Labels (comma-separated)", disabled=not use_sample_labels)
         cn_input = st.text_area("CN (CaO + Na₂O)", placeholder="e.g., 30, 20, 10")
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
         a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
@@ -300,11 +298,9 @@ elif st.session_state.page == "cia":
                 st.error("All input lists must be the same length.")
             else:
                 label_list = [f"S{i+1}" for i in range(len(cn_vals))]
-                if use_sample_labels and labels:
-                    label_list = [l.strip() for l in labels.split(",")] or label_list
     
                 plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
-                svg = generate_svg(plot_data, marker=marker, marker_color=color, add_labels=use_sample_labels)
+                svg = generate_svg(plot_data, marker=marker, marker_color=color)
     
                 # Show plot lower
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
