@@ -218,7 +218,7 @@ elif st.session_state.page == "cia":
         )
     
         # Triangle outline
-        tri_coords = [(0.0, 0.0), (1.0, 0.0), (0.5, math.sqrt(3)/2)]
+        tri_coords = [(0.0, -0.5), (1.0, -0.5), (0.5, (math.sqrt(3)/2)-0.5)]
         svg += '<polygon points="{}" fill="none" stroke="black" stroke-width="2"/>'.format(
             ' '.join(f"{svg_point(x, y)[0]},{svg_point(x, y)[1]}" for x, y in tri_coords))
     
@@ -242,7 +242,7 @@ elif st.session_state.page == "cia":
         svg += f'''
             <text x="{svg_point(0.5, 0.9)[0]}" y="{svg_point(0.5, 0.9)[1] - 10}" text-anchor="middle" font-size="16">A (Al₂O₃)</text>
             <text x="{svg_point(0.0, 0.0)[0] - 10}" y="{svg_point(0.0, 0.0)[1] + 5}" text-anchor="end" font-size="16">CN (CaO + Na₂O)</text>
-            <text x="{svg_point(1.0, 0.0)[0] + 20}" y="{svg_point(1.0, 0.0)[1] + 5}" text-anchor="start" font-size="16">K (K₂O)</text>
+            <text x="{svg_point(1.0, 0.0)[0] + 30}" y="{svg_point(1.0, 0.0)[1] + 5}" text-anchor="start" font-size="16">K (K₂O)</text>
         '''
     
         # CN axis ticks
