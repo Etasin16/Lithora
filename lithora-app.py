@@ -190,10 +190,12 @@ elif st.session_state.page == "cia":
 
     st.markdown("Upload oxide data to compute the CIA index and generate alteration plots.")
     import math
-    from IPython.display import SVG, display
+    import pandas as pd
     
     def ternary_to_xy(a, cn, k):
         total = a + cn + k
+        if total == 0:
+            return 0, 0
         a /= total
         cn /= total
         k /= total
@@ -201,10 +203,10 @@ elif st.session_state.page == "cia":
         y = (math.sqrt(3) / 2) * cn
         return x, y
     
-    def generate_svg(points, filename="ternary_plot.svg"):
-        width = 800  # made wider
+    def generate_svg(points):
+        width = 800
         height = 520
-        padding = 150  # more padding to shift right
+        padding = 150
         scale = 400
     
         def svg_point(x, y):
@@ -212,24 +214,18 @@ elif st.session_state.page == "cia":
             py = height - (padding + y * scale)
             return px, py
     
-        svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">
-            <rect width="100%" height="100%" fill="white"/>'''
+        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">'
+        svg += '<rect width="100%" height="100%" fill="white"/>'
     
-        # Triangle outline
-        tri_coords = [
-            (0.0, 0.0),
-            (1.0, 0.0),
-            (0.5, math.sqrt(3)/2),
-        ]
+        # Draw main triangle
+        tri_coords = [(0.0, 0.0), (1.0, 0.0), (0.5, math.sqrt(3)/2)]
         svg += '<polygon points="{}" fill="none" stroke="black" stroke-width="2"/>'.format(
             ' '.join(f"{svg_point(x, y)[0]},{svg_point(x, y)[1]}" for x, y in tri_coords)
         )
     
-        # Grid lines and ticks
+        # Grid lines
         for i in range(1, 10):
             frac = i / 10
-    
-            # Grid lines
             ax, ay = ternary_to_xy(frac * 100, 100 - frac * 100, 0)
             bx, by = ternary_to_xy(frac * 100, 0, 100 - frac * 100)
             svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
@@ -242,7 +238,6 @@ elif st.session_state.page == "cia":
             bx, by = ternary_to_xy(0, 100 - frac * 100, frac * 100)
             svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
     
-    
         # Axis labels
         svg += f'''
             <text x="{svg_point(0.5, 0.9)[0]}" y="{svg_point(0.5, 0.9)[1] - 10}" text-anchor="middle" font-size="16">A (Al₂O₃)</text>
@@ -250,14 +245,7 @@ elif st.session_state.page == "cia":
             <text x="{svg_point(1.0, 0.0)[0] + 10}" y="{svg_point(1.0, 0.0)[1] + 5}" text-anchor="start" font-size="16">K (K₂O)</text>
         '''
     
-        # Vertical CN axis line (center top)
-        top_x, top_y = ternary_to_xy(0, 100, 0)
-        bottom_x, bottom_y = ternary_to_xy(0, 0, 100)
-        top_px, top_py = svg_point(top_x, top_y)
-        bot_px, bot_py = svg_point(bottom_x, bottom_y)
-        svg += f'<line x1="{bot_px}" y1="{bot_py}" x2="{top_px}" y2="{top_py}" stroke="black" stroke-width="1.5" stroke-dasharray="0"/>'
-    
-        # CN ticks on vertical line
+        # Vertical axis ticks
         for i in range(0, 11):
             frac = i / 10
             x, y = ternary_to_xy(0, frac * 100, (1 - frac) * 100)
@@ -275,19 +263,51 @@ elif st.session_state.page == "cia":
             '''
     
         svg += '</svg>'
-        with open(filename, "w") as f:
-            f.write(svg)
+        return svg
     
-    # Sample data
-    sample_points = [
-        ("Sample 1", 30, 10, 60),
-        ("Sample 2", 20, 30, 50),
-        ("Sample 3", 10, 40, 50),
-        ("Sample 4", 25, 25, 50),
-    ]
+    # Streamlit Interface
+    st.set_page_config(page_title="Lithora – CIA Ternary", layout="centered")
+    st.title("🔺 Chemical Index of Alteration (CIA) Ternary Plot")
+    st.markdown("Enter or upload data for Al₂O₃, CaO + Na₂O (CN), and K₂O to plot on the CIA ternary diagram.")
     
-    generate_svg(sample_points)
-    st.display(SVG(filename="ternary_plot.svg"))
+    mode = st.radio("Input Mode", ["Manual Entry", "Upload CSV"])
+    
+    points = []
+    
+    if mode == "Manual Entry":
+        labels = st.text_area("Sample Labels", value="Sample 1, Sample 2")
+        cn_vals = st.text_area("CN (CaO + Na₂O)", value="30, 20")
+        k_vals = st.text_area("K (K₂O)", value="10, 30")
+        a_vals = st.text_area("A (Al₂O₃)", value="60, 50")
+    
+        if st.button("Plot Ternary Diagram"):
+            try:
+                labels_list = [l.strip() for l in labels.split(",")]
+                cn_list = [float(x) for x in cn_vals.split(",")]
+                k_list = [float(x) for x in k_vals.split(",")]
+                a_list = [float(x) for x in a_vals.split(",")]
+    
+                if not (len(labels_list) == len(cn_list) == len(k_list) == len(a_list)):
+                    st.error("All lists must be the same length.")
+                else:
+                    points = list(zip(labels_list, cn_list, k_list, a_list))
+            except Exception as e:
+                st.error(f"Error parsing input: {e}")
+    
+    else:
+        uploaded_file = st.file_uploader("Upload CSV with columns: Label, CN, K, A")
+        if uploaded_file:
+            try:
+                df = pd.read_csv(uploaded_file)
+                points = list(zip(df['Label'], df['CN'], df['K'], df['A']))
+            except Exception as e:
+                st.error(f"Error reading file: {e}")
+    
+    if points:
+        svg_code = generate_svg(points)
+        st.subheader("🖼️ Ternary Diagram Output")
+        st.components.v1.html(svg_code, height=550, scrolling=False)
+    
 
 # --- Page: Rainfall Plot ---
 elif st.session_state.page == "rainfall":
