@@ -188,6 +188,7 @@ elif st.session_state.page == "cia":
     st.button("⬅️ Back to Home", on_click=go_home)
 
     st.markdown("Upload oxide data to compute the CIA index and generate alteration plots.")
+    
     import pandas as pd
     import math
     import base64
@@ -214,8 +215,10 @@ elif st.session_state.page == "cia":
     
     def generate_svg(points, marker="circle", marker_color="black", add_labels=True):
         width, height, padding, scale = 800, 620, 150, 400
-        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">
-        <rect width="100%" height="100%" fill="white"/>'
+        svg = (
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">'
+            f'<rect width="100%" height="100%" fill="white"/>'
+        )
     
         # Triangle outline
         tri_coords = [(0.0, 0.0), (1.0, 0.0), (0.5, math.sqrt(3)/2)]
@@ -258,7 +261,10 @@ elif st.session_state.page == "cia":
             label, cn, k, a = row
             x, y = ternary_to_xy(a, cn, k)
             sx, sy = svg_point(x, y)
-            svg += f'<{marker} cx="{sx}" cy="{sy}" r="5" fill="{marker_color}"/>'
+            shape_attrs = f'x="{sx}" y="{sy}" width="10" height="10"' if marker == "rect" else (
+                          f'points="{sx},{sy-6} {sx-5},{sy+4} {sx+5},{sy+4}"' if marker == "triangle" else 
+                          f'cx="{sx}" cy="{sy}" r="5"')
+            svg += f'<{marker} {shape_attrs} fill="{marker_color}"/>'
             if add_labels and label:
                 svg += f'<text x="{sx + 6}" y="{sy - 6}" font-size="12">{label}</text>'
     
@@ -301,7 +307,7 @@ elif st.session_state.page == "cia":
                     label_list = [l.strip() for l in labels.split(",")] or label_list
     
                 plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
-                svg = generate_svg(plot_data, marker=marker, marker_color=color)
+                svg = generate_svg(plot_data, marker=marker, marker_color=color, add_labels=use_sample_labels)
     
                 # Show plot lower
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
