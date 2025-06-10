@@ -189,7 +189,105 @@ elif st.session_state.page == "cia":
     st.button("⬅️ Back to Home", on_click=go_home)
 
     st.markdown("Upload oxide data to compute the CIA index and generate alteration plots.")
-    st.info("🔧 CIA logic will go here.")
+    import math
+    from IPython.display import SVG, display
+    
+    def ternary_to_xy(a, cn, k):
+        total = a + cn + k
+        a /= total
+        cn /= total
+        k /= total
+        x = 0.5 * (2 * k + cn)
+        y = (math.sqrt(3) / 2) * cn
+        return x, y
+    
+    def generate_svg(points, filename="ternary_plot.svg"):
+        width = 800  # made wider
+        height = 520
+        padding = 150  # more padding to shift right
+        scale = 400
+    
+        def svg_point(x, y):
+            px = padding + x * scale
+            py = height - (padding + y * scale)
+            return px, py
+    
+        svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">
+            <rect width="100%" height="100%" fill="white"/>'''
+    
+        # Triangle outline
+        tri_coords = [
+            (0.0, 0.0),
+            (1.0, 0.0),
+            (0.5, math.sqrt(3)/2),
+        ]
+        svg += '<polygon points="{}" fill="none" stroke="black" stroke-width="2"/>'.format(
+            ' '.join(f"{svg_point(x, y)[0]},{svg_point(x, y)[1]}" for x, y in tri_coords)
+        )
+    
+        # Grid lines and ticks
+        for i in range(1, 10):
+            frac = i / 10
+    
+            # Grid lines
+            ax, ay = ternary_to_xy(frac * 100, 100 - frac * 100, 0)
+            bx, by = ternary_to_xy(frac * 100, 0, 100 - frac * 100)
+            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
+    
+            ax, ay = ternary_to_xy(0, frac * 100, 100 - frac * 100)
+            bx, by = ternary_to_xy(100 - frac * 100, frac * 100, 0)
+            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
+    
+            ax, ay = ternary_to_xy(100 - frac * 100, 0, frac * 100)
+            bx, by = ternary_to_xy(0, 100 - frac * 100, frac * 100)
+            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by)[1]}" stroke="#ccc"/>'
+    
+    
+        # Axis labels
+        svg += f'''
+            <text x="{svg_point(0.5, 0.9)[0]}" y="{svg_point(0.5, 0.9)[1] - 10}" text-anchor="middle" font-size="16">A (Al₂O₃)</text>
+            <text x="{svg_point(0.0, 0.0)[0] - 10}" y="{svg_point(0.0, 0.0)[1] + 5}" text-anchor="end" font-size="16">CN (CaO + Na₂O)</text>
+            <text x="{svg_point(1.0, 0.0)[0] + 10}" y="{svg_point(1.0, 0.0)[1] + 5}" text-anchor="start" font-size="16">K (K₂O)</text>
+        '''
+    
+        # Vertical CN axis line (center top)
+        top_x, top_y = ternary_to_xy(0, 100, 0)
+        bottom_x, bottom_y = ternary_to_xy(0, 0, 100)
+        top_px, top_py = svg_point(top_x, top_y)
+        bot_px, bot_py = svg_point(bottom_x, bottom_y)
+        svg += f'<line x1="{bot_px}" y1="{bot_py}" x2="{top_px}" y2="{top_py}" stroke="black" stroke-width="1.5" stroke-dasharray="0"/>'
+    
+        # CN ticks on vertical line
+        for i in range(0, 11):
+            frac = i / 10
+            x, y = ternary_to_xy(0, frac * 100, (1 - frac) * 100)
+            px, py = svg_point(x, y)
+            svg += f'<line x1="{px - 5}" y1="{py}" x2="{px + 5}" y2="{py}" stroke="black" />'
+            svg += f'<text x="{px + 10}" y="{py + 3}" font-size="10" fill="black">{int(frac * 100)}%</text>'
+    
+        # Plot sample points
+        for label, cn, k, a in points:
+            x, y = ternary_to_xy(a, cn, k)
+            sx, sy = svg_point(x, y)
+            svg += f'''
+                <circle cx="{sx}" cy="{sy}" r="5" fill="red"/>
+                <text x="{sx + 6}" y="{sy - 6}" font-size="12">{label}</text>
+            '''
+    
+        svg += '</svg>'
+        with open(filename, "w") as f:
+            f.write(svg)
+    
+    # Sample data
+    sample_points = [
+        ("Sample 1", 30, 10, 60),
+        ("Sample 2", 20, 30, 50),
+        ("Sample 3", 10, 40, 50),
+        ("Sample 4", 25, 25, 50),
+    ]
+    
+    generate_svg(sample_points)
+    display(SVG(filename="ternary_plot.svg"))
 
 # --- Page: Rainfall Plot ---
 elif st.session_state.page == "rainfall":
