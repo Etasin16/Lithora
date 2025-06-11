@@ -231,7 +231,7 @@ elif st.session_state.page == "cia":
        # strong weathring
         lines = [(-0.1, 0.85), (0.57, 0.85)]
         x_li, y_li = zip(*lines)
-        ax.plot(x_li, y_li, marker='--', color='gray')
+        ax.plot(x_li, y_li, linestyle='--', color='gray')
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
