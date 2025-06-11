@@ -240,7 +240,7 @@ elif st.session_state.page == "cia":
         ax.plot(x_li, y_li, linestyle='--', color='gray')
         ax.text(-0.001, 0.67, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
         ax.text(0.3, 0.77, 'Smectite', ha='center', fontsize=7,color = "gray")
-        ax.text(0.65, 0.77, 'Illite\n   Muscovite', ha='left', fontsize=7,color = "gray")
+        ax.text(0.63, 0.77, 'Illite\n \n  Muscovite', ha='left', fontsize=7,color = "gray")
 
          # Weak weathering
         lines = [(-0.1, 0.5), (0.75, 0.5)]
@@ -250,6 +250,9 @@ elif st.session_state.page == "cia":
         ax.text(0.51, 0.52, 'average granite', ha='center', fontsize=7,color = "gray")
         ax.text(0.2, 0.52, 'plahioclase', ha='center', fontsize=7,color = "gray")
         ax.text(0.8, 0.52, 'k-feldspar', ha='center', fontsize=7,color = "gray")
+
+          # Arrows
+        plt.arrow(0.2, 0.3, 0.4, 0.4, head_width=0.03, head_length=0.5, fc='blue', ec='black')
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
