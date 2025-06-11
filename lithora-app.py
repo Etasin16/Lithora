@@ -209,7 +209,7 @@ elif st.session_state.page == "cia":
         tax.ticks(axis='lbr', linewidth=1, multiple=10, fontsize=10)
 
         # Vertical line from (CN=100, A=0, K=0) to (CN=100, A=100, K=-65)
-        tax.line([(100, 0, 0), (100, -65, 100)], linewidth=1.5, color="black", linestyle='--')
+        tax.line((100, 0, 0), (0, 0, 100), linewidth=1.5, color="black", linestyle='--')
 
         points = [(row[1], row[2], row[3]) for row in data]
         tax.scatter(points, marker=marker, color=color)
