@@ -221,7 +221,7 @@ elif st.session_state.page == "cia":
         ax.plot(x_li, y_li, 'k-', lw=2)
 
         # Mark Lavel and grid
-        for i in range(11):
+        for i in range(10):
             fcn = i/10
             x_m,y_m = zip((-0.1,(math.sqrt(3)/2)-fcn ), (-0.1, (math.sqrt(3)/2)))
             ax.plot(x_m, y_m, marker='<', color='black',lw=1)
