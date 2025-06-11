@@ -191,49 +191,50 @@ elif st.session_state.page == "cia":
 
     import pandas as pd
     import math
-    import base64
-    from io import BytesIO
     import matplotlib.pyplot as plt
-    import ternary
+    import io
+    
+    def ternary_to_xy(a, cn, k):
+        total = a + cn + k
+        a /= total
+        cn /= total
+        k /= total
+        x = 0.5 * (2 * k + cn)
+        y = (math.sqrt(3) / 2) * cn
+        return x, y
 
-    def generate_ternary_plot(data, marker="o", color="black", add_labels=True):
-        scale = 100
-        fig, tax = ternary.figure(scale=scale)
-        fig.set_size_inches(6, 6)
+    # --- Plotting function ---
+    def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
+        fig, ax = plt.subplots(figsize=(8, 7))
+        ax.set_xlim(-0.1, 1.1)
+        ax.set_ylim(-0.1, math.sqrt(3)/2 + 0.1)
+        ax.axis('off')
 
-        tax.gridlines(color="gray", linestyle='-', linewidth=1)
-        tax.boundary(linewidth=2.0)
-        tax.left_axis_label("A (Al₂O₃)", fontsize=12)
-        tax.right_axis_label("K (K₂O)", fontsize=12)
-        tax.bottom_axis_label("CN (CaO + Na₂O)", fontsize=12)
-        tax.ticks(axis='lbr', linewidth=1, multiple=10, fontsize=10)
+        # Draw triangle
+        triangle = [(0, 0), (1, 0), (0.5, math.sqrt(3)/2), (0, 0)]
+        x_tri, y_tri = zip(*triangle)
+        ax.plot(x_tri, y_tri, 'k-', lw=2)
 
-        # Vertical line from (CN=100, A=0, K=0) to (CN=100, A=100, K=-65)
-        tax.line((100, 0, 0), (0, 0, 100), linewidth=1.5, color="black", linestyle='--')
+        # Axis labels
+        ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
+        ax.text(-0.05, -0.05, 'CN (CaO + Na₂O)', ha='right', fontsize=14)
+        ax.text(1.05, -0.05, 'K (K₂O)', ha='left', fontsize=14)
 
-        points = [(row[1], row[2], row[3]) for row in data]
-        tax.scatter(points, marker=marker, color=color)
+        # Plot points
+        for label, cn, k, a in data:
+            x, y = ternary_to_xy(a, cn, k)
+            ax.plot(x, y, marker=marker, color=marker_color, markersize=8)
+            if show_labels:
+                ax.text(x + 0.01, y + 0.01, label, fontsize=10)
 
-        if add_labels:
-            for row in data:
-                label, cn, k, a = row
-                tax.annotate(label, position=(cn, k, a), fontsize=10, offset=0.05)
-
-        tax.clear_matplotlib_ticks()
-        plt.tight_layout()
-
-        buf = BytesIO()
-        plt.savefig(buf, format='png', dpi=300)
-        buf.seek(0)
-        return buf
+        return fig
 
     # --- UI ---
-    st.title("🧪 CIA Ternary Plot Tool")
-    st.markdown("Generate a CIA ternary plot using oxide values: Al₂O₃ (A), CaO + Na₂O (CN), and K₂O (K).")
+    st.title("🧪 CIA Ternary Plot Tool (Matplotlib)")
+    st.markdown("Generate a CIA ternary plot using oxide values: Al₂O₃ (A), CaO + Na₂O (CN), and K₂O (K). Now with PNG/JPG download support.")
 
-    # Sample input section
     with st.form("cia_form"):
-        use_sample_labels = st.checkbox("🌤️ Add Sample Labels")
+        use_sample_labels = st.checkbox("🔤 Add Sample Labels")
         labels = st.text_area("Sample Labels (comma-separated)", disabled=not use_sample_labels)
         cn_input = st.text_area("CN (CaO + Na₂O)", placeholder="e.g., 30, 20, 10")
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
@@ -258,27 +259,36 @@ elif st.session_state.page == "cia":
                     label_list = [l.strip() for l in labels.split(",")] or label_list
 
                 plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
-                img_buf = generate_ternary_plot(plot_data, marker=marker, color=color, add_labels=use_sample_labels)
+
+                # Create figure
+                fig = plot_ternary(plot_data, marker=marker, marker_color=color, show_labels=use_sample_labels)
+
+                # Save to BytesIO
+                buf = io.BytesIO()
+                fig.savefig(buf, format='png', bbox_inches='tight')
+                buf.seek(0)
 
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
                 st.subheader("📈 CIA Ternary Plot")
-                st.image(img_buf, caption="CIA Ternary Diagram")
+                st.image(buf, caption="CIA Ternary Diagram")
                 st.markdown("</div>", unsafe_allow_html=True)
 
                 # Data Table
                 df = pd.DataFrame({
                     "Label": label_list,
-                    "CN (CaO+Na2O)": cn_vals,
-                    "K (K2O)": k_vals,
-                    "A (Al2O3)": a_vals
+                    "CN (CaO+Na₂O)": cn_vals,
+                    "K (K₂O)": k_vals,
+                    "A (Al₂O₃)": a_vals
                 })
                 st.subheader("📄 Data Table")
                 st.dataframe(df)
-                csv = df.to_csv(index=False).encode()
-                st.download_button("📅 Download Data (CSV)", csv, "cia_data.csv", "text/csv")
 
-                # PNG Download
-                st.download_button("📅 Download Plot (PNG)", img_buf, file_name="cia_plot.png", mime="image/png")
+                # CSV download
+                csv = df.to_csv(index=False).encode()
+                st.download_button("📥 Download Data (CSV)", csv, "cia_data.csv", "text/csv")
+
+                # PNG download
+                st.download_button("📥 Download Plot (PNG)", buf, "cia_plot.png", "image/png")
 
         except Exception as e:
             st.error(f"Error: {e}")
