@@ -245,6 +245,9 @@ elif st.session_state.page == "cia":
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
         ax.text(-0.001, 0.52, 'Weak\nweathering', ha='center', fontsize=7,color = "gray")
+        ax.text(0.51, 0.52, 'Average granite', ha='center', fontsize=7,color = "gray")
+        ax.text(0.1, 0.52, 'Plahioclase', ha='center', fontsize=7,color = "gray")
+        ax.text(0.8, 0.52, 'Pk-feldspar', ha='center', fontsize=7,color = "gray")
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
@@ -254,7 +257,7 @@ elif st.session_state.page == "cia":
         # Plot points
         for label, cn, k, a in data:
             x, y = ternary_to_xy(a, cn, k)
-            ax.plot(x, y, marker=marker, color=marker_color, markersize=2)
+            ax.plot(x, y, marker=marker, color=marker_color, markersize=5)
             if show_labels:
                 ax.text(x + 0.01, y + 0.01, label, fontsize=10)
 
