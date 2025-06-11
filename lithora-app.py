@@ -229,9 +229,9 @@ elif st.session_state.page == "cia":
             for j in range(11):
               ax.text(-0.15,j/10, f"{int(j * 10)}", ha='left', fontsize=8)
        # strong weathring
-        lines = [(-0.1, 0.85), (0.60, 0.85)]
+        lines = [(-0.1, 0.85), (0.57, 0.85)]
         x_li, y_li = zip(*lines)
-        ax.plot(x_li, y_li, marker='.', color='black')
+        ax.plot(x_li, y_li, marker='--', color='gray')
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
