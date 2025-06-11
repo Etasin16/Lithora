@@ -261,16 +261,16 @@ elif st.session_state.page == "cia":
         ax.text(0.51, 0.52, 'Average granite', ha='center', fontsize=7,color = "gray")
         ax.text(0.2, 0.52, 'Plahioclase', ha='center', fontsize=7,color = "gray")
         ax.text(0.8, 0.52, 'K-feldspar', ha='center', fontsize=7,color = "gray")
-        ax.text(0.3, 0.48, 'Average gabbro', ha='center', fontsize=7,color = "gray")
+        ax.text(0.35, 0.48, 'Average gabbro', ha='center', fontsize=7,color = "gray")
 
           # Arrows & Lines
         plt.arrow(0.28, 0.52, 0.145, 0.3, head_width=0.01, head_length=0.01, fc='red', ec='red')
         plt.arrow(0.48, 0.54, 0.115, 0.23, head_width=0.01, head_length=0.01, fc='red', ec='red')
 
-        lineAR = [(0.2975, 0.385), (0.2, 0.62),(0.2125,0.41)]
+        lineAR = [(0.5375, 0.655), (0.2, 0.62),(0.3525,0.67)]
         x_li, y_li = zip(*lineAR)
         ax.plot(x_li, y_li, linestyle='--', color='gray',lw=1)
-        ax.text(0.18, 0.62, 'Weathring trend', ha='center', fontsize=7,color = "gray",fontstyle='italic')
+        ax.text(0.16, 0.62, 'Weathring\ntrend', ha='center', fontsize=6,color = "gray",fontstyle='italic')
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
