@@ -225,7 +225,7 @@ elif st.session_state.page == "cia":
             fcn = i/10
             x_m,y_m = zip((-0.1,(math.sqrt(3)/2)-fcn ), (-0.1, (math.sqrt(3)/2)))
             ax.plot(x_m, y_m, marker='x', color='black',lw=0)
-            ax.text((-0.1,(math.sqrt(3)/2)-fcn ), (-0.1, (math.sqrt(3)/2)), fcn *100,'%', ha='left', fontsize=14)
+            ax.text((-0.1,(math.sqrt(3)/2)-fcn ), (-0.1, (math.sqrt(3)/2)), fcn *100, ha='left', fontsize=14)
 
         # Axis labels
         ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
