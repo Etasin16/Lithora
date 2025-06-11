@@ -207,30 +207,30 @@ elif st.session_state.page == "cia":
     def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
         fig, ax = plt.subplots(figsize=(8, 7))
         ax.set_xlim(-0.1, 1.1)
-        ax.set_ylim(-0.1, math.sqrt(3)/2 + 0.1)
+        ax.set_ylim(-0.1, 1 + 0.1)
         ax.axis('off')
 
         # Draw triangle
-        triangle = [(0, 0), (1, 0), (0.5, math.sqrt(3)/2), (0, 0)]
+        triangle = [(0, 0), (1, 0), (0.5, 1), (0, 0)]
         x_tri, y_tri = zip(*triangle)
         ax.plot(x_tri, y_tri, 'k-', lw=2)
 
         # Draw line
-        line = [(-0.1, 0), (-0.1, math.sqrt(3)/2), (-0.1, 0)]
+        line = [(-0.1, 0), (-0.1, 1), (-0.1, 0)]
         x_li, y_li = zip(*line)
         ax.plot(x_li, y_li, 'k-', lw=2)
 
         # Mark Lavel and grid
         for i in range(11):
             fcn = i/10
-            x_m,y_m = zip((-0.1,(math.sqrt(3)/2)-fcn ), (-0.1, (math.sqrt(3)/2)))
+            x_m,y_m = zip((-0.1,(1)-fcn ), (-0.1, (1)))
             ax.plot(x_m, y_m, marker='x', color='black',lw=0)
 
-            for j in range(0,(math.sqrt(3)/2),((math.sqrt(3)/2)/10)):
+            for j in range(0,(1),((1)/10)):
               ax.text(-0.15,j, f"{int(fcn * 100)}", ha='left', fontsize=8)
 
         # Axis labels
-        ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
+        ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
         ax.text(-0.05, -0.05, 'CN (CaO + Na₂O)', ha='right', fontsize=14)
         ax.text(1.05, -0.05, 'K (K₂O)', ha='left', fontsize=14)
 
