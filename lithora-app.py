@@ -193,7 +193,7 @@ elif st.session_state.page == "cia":
     import math
     import base64
     from io import BytesIO
-    from IPython.display import SVG, display
+    from IPython.display import SVG, display,Image
     
     # --- Helper functions ---
     def ternary_to_xy(a, cn, k):
@@ -301,16 +301,23 @@ elif st.session_state.page == "cia":
     
                 plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
                 svg = generate_svg(plot_data, marker=marker, marker_color=color)
-                # Convert SVG to PNG
-                import cairosvg
-                IMG = cairosvg.svg2png(url= svg, write_to='cia_plot.png')
+                
 
                 # Show plot lower
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
                 st.subheader("📈 CIA Ternary Plot")
                 import streamlit.components.v1 as components
                 components.html(svg, height=650)
+                
+                # Convert SVG to PNG
+                from svglib.svglib import svg2rlg
+                from reportlab.graphics import renderPM
 
+                # Load the SVG file and convert it to a drawing
+                drawing = svg2rlg(svg)
+
+                # Render to PNG file
+                renderPM.drawToFile(drawing, "cia_plot.png", fmt="PNG")
                 st.markdown("</div>", unsafe_allow_html=True)
                 display(Image(filename='cia_plot.png'))
                 
