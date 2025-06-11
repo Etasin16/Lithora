@@ -317,7 +317,7 @@ elif st.session_state.page == "cia":
                 drawing = svg2rlg(svg)
 
                 # Render to PNG file
-                renderPM.drawToFile(drawing, "cia_plot.png", fmt="PNG")
+                IMG=renderPM.drawToFile(drawing, "cia_plot.png", fmt="PNG")
                 st.markdown("</div>", unsafe_allow_html=True)
                 display(Image(filename='cia_plot.png'))
                 
