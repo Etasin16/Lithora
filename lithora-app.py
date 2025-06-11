@@ -265,7 +265,7 @@ elif st.session_state.page == "cia":
 
           # Arrows
         plt.arrow(0.28, 0.52, 0.145, 0.3, head_width=0.01, head_length=0.01, fc='red', ec='red')
-        plt.arrow(0.48, 0.52, 0.045, 0.2, head_width=0.01, head_length=0.01, fc='red', ec='red')
+        plt.arrow(0.48, 0.52, 0.145, 0.2, head_width=0.01, head_length=0.01, fc='red', ec='red')
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
