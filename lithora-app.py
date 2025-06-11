@@ -25,8 +25,6 @@ if st.session_state.page == "home":
     st.title("🌍 Lithora Geoscience Toolkit")
     st.markdown("Welcome to **Lithora**, an integrated geoscience app for plotting and analyzing geological data.")
 
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Ternary_plot_QFL_diagram.svg/1024px-Ternary_plot_QFL_diagram.svg.png", width=600)
-
     st.subheader("🧭 Choose an analysis module:")
     
     st.button("📌 QFL Ternary Plot", on_click=go_qfl)
