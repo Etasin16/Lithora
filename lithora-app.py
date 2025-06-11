@@ -216,10 +216,15 @@ elif st.session_state.page == "cia":
         ax.plot(x_tri, y_tri, 'k-', lw=2)
 
         # Draw line
-        
-        line = [(0, 0), (0, math.sqrt(3)/2), (0, 0)]
+        line = [(-0.1, 0), (-0.1, math.sqrt(3)/2), (-0.1, 0)]
         x_li, y_li = zip(*line)
         ax.plot(x_li, y_li, 'k-', lw=2)
+
+        # Mark Lavel and grid
+        for i in range(11):
+            fcn = i/10
+            x,y = (100 * (1 - fcn), 0, 100 * fcn)
+            ax.plot(x, y, marker='|', color='black')
 
         # Axis labels
         ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
