@@ -200,7 +200,7 @@ elif st.session_state.page == "cia":
         cn /= total
         k /= total
         x = 0.5 * (2 * k + cn)
-        y = (math.sqrt(3) / 2) * cn
+        y = (1) * cn
         return x, y
 
     # --- Plotting function ---
@@ -223,10 +223,10 @@ elif st.session_state.page == "cia":
         # Mark Lavel and grid
         for i in range(11):
             fcn = i/10
-            x_m,y_m = zip((-0.1,(1)-fcn ), (-0.1, (1)))
+            x_m,y_m = zip((-0.1,1-fcn ), (-0.1, 1))
             ax.plot(x_m, y_m, marker='x', color='black',lw=0)
 
-            for j in range(0,(1),((1)/10)):
+            for j in range(0,1,(1/10)):
               ax.text(-0.15,j, f"{int(fcn * 100)}", ha='left', fontsize=8)
 
         # Axis labels
