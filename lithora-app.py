@@ -301,7 +301,10 @@ elif st.session_state.page == "cia":
     
                 plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
                 svg = generate_svg(plot_data, marker=marker, marker_color=color)
-    
+                # Convert SVG to PNG
+                import cairosvg
+                IMG = cairosvg.svg2png(url= svg, write_to='output.png')
+
                 # Show plot lower
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
                 st.subheader("📈 CIA Ternary Plot")
@@ -309,6 +312,8 @@ elif st.session_state.page == "cia":
                 components.html(svg, height=650)
 
                 st.markdown("</div>", unsafe_allow_html=True)
+                
+
                 # SVG download link
                 st.download_button("📥 Download Plot",svg,"cia_plot.svg")
     
