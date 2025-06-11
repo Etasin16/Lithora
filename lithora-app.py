@@ -268,7 +268,7 @@ elif st.session_state.page == "cia":
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
         a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
 
-        marker = st.selectbox("Select Marker Type", ["o", "s", "^"], index=0.1)
+        marker = st.selectbox("Select Marker Type", ["o", "s", "^"], index=0)
         color = st.color_picker("Pick Marker Color", "#000000")
 
         submit = st.form_submit_button("Generate Plot")
