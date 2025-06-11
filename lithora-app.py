@@ -215,6 +215,9 @@ elif st.session_state.page == "cia":
         x_tri, y_tri = zip(*triangle)
         ax.plot(x_tri, y_tri, 'k-', lw=2)
 
+        # Draw line
+        ax.line((100, 0, 0), (100, 0, 100), linewidth=1.5, color="black", linestyle='--')
+
         # Axis labels
         ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
         ax.text(-0.05, -0.05, 'CN (CaO + Na₂O)', ha='right', fontsize=14)
@@ -230,12 +233,9 @@ elif st.session_state.page == "cia":
         return fig
 
     # --- UI ---
-    st.title("🧪 CIA Ternary Plot Tool (Matplotlib)")
-    st.markdown("Generate a CIA ternary plot using oxide values: Al₂O₃ (A), CaO + Na₂O (CN), and K₂O (K). Now with PNG/JPG download support.")
+    st.title("🧪 CIA Ternary Plot Tool")
 
     with st.form("cia_form"):
-        use_sample_labels = st.checkbox("🔤 Add Sample Labels")
-        labels = st.text_area("Sample Labels (comma-separated)", disabled=not use_sample_labels)
         cn_input = st.text_area("CN (CaO + Na₂O)", placeholder="e.g., 30, 20, 10")
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
         a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
@@ -255,13 +255,11 @@ elif st.session_state.page == "cia":
                 st.error("All input lists must be the same length.")
             else:
                 label_list = [f"S{i+1}" for i in range(len(cn_vals))]
-                if use_sample_labels and labels:
-                    label_list = [l.strip() for l in labels.split(",")] or label_list
 
                 plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
 
                 # Create figure
-                fig = plot_ternary(plot_data, marker=marker, marker_color=color, show_labels=use_sample_labels)
+                fig = plot_ternary(plot_data, marker=marker, marker_color=color)
 
                 # Save to BytesIO
                 buf = io.BytesIO()
