@@ -308,22 +308,16 @@ elif st.session_state.page == "cia":
                 st.subheader("📈 CIA Ternary Plot")
                 import streamlit.components.v1 as components
                 components.html(svg, height=650)
-                
-                # Convert SVG to PNG
-                from svglib.svglib import svg2rlg
-                from reportlab.graphics import renderPM
-
-                # Load the SVG file and convert it to a drawing
-                drawing = svg2rlg("</div>")
-
-                # Render to PNG file
-                IMG=renderPM.drawToFile(drawing, "cia_plot.png", fmt="PNG")
                 st.markdown("</div>", unsafe_allow_html=True)
-                display(Image(filename='cia_plot.png'))
                 
+                # Convert SVG to PNG bytes
 
+                png_bytes = cairosvg.svg2png(bytestring=svg.encode('utf-8'))
+                # Show PNG in Streamlit
+                st.image(png_bytes, caption="CIA Ternary Diagram (PNG)")
+                
                 # SVG download link
-                st.download_button("📥 Download Plot",IMG,"cia_plot.png")
+                st.download_button("📥 Download PNG", png_bytes, "cia_plot.png", "image/png")
     
                 # Data Table
                 df = pd.DataFrame({
