@@ -196,10 +196,6 @@ elif st.session_state.page == "cia":
     import matplotlib.pyplot as plt
     import ternary
 
-    # --- Set page config (must be first Streamlit command) ---
-    st.set_page_config(page_title="Lithora – CIA Ternary", layout="centered")
-
-    # --- Helper functions ---
     def generate_ternary_plot(data, marker="o", color="black", add_labels=True):
         scale = 100
         fig, tax = ternary.figure(scale=scale)
