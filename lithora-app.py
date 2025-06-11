@@ -193,70 +193,70 @@ elif st.session_state.page == "cia":
     import math
     import matplotlib.pyplot as plt
     import io
-    
+
     def ternary_to_xy(a, cn, k):
         total = a + cn + k
         a /= total
         cn /= total
         k /= total
-        x = 0.5 * (2 * k + cn)
-        y = (1) * cn
+        x = 5 * (2 * k + cn)
+        y = (10) * cn
         return x, y
 
     # --- Plotting function ---
     def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
         fig, ax = plt.subplots(figsize=(8, 7))
-        ax.set_xlim(-0.1, 1.1)
-        ax.set_ylim(-0.1, 1 + 0.1)
+        ax.set_xlim(-1, 11)
+        ax.set_ylim(-1, 10 + 1)
         ax.axis('off')
 
         # Draw triangle
-        triangle = [(0, 0), (1, 0), (0.5, 1), (0, 0)]
+        triangle = [(0, 0), (10, 0), (5, 10), (0, 0)]
         x_tri, y_tri = zip(*triangle)
         ax.plot(x_tri, y_tri, 'k-', lw=2)
 
         # Draw line
-        line = [(-0.1, 0), (-0.1, 1), (-0.1, 0)]
+        line = [(-1, 0), (-1, 10), (-1, 0)]
         x_li, y_li = zip(*line)
         ax.plot(x_li, y_li, 'k-', lw=2)
 
         # Mark Lavel and grid
         for i in range(11):
             fcn = i/10
-            x_m,y_m = zip((-0.1,1-fcn ), (-0.1, 1))
+            x_m,y_m = zip((-1,10-fcn ), (-1, 10))
             ax.plot(x_m, y_m, marker='x', color='black',lw=0)
 
             for j in range(11):
-              ax.text(-0.15,j/10, f"{int(j * 10)}", ha='left', fontsize=8)
+                ax.text(-1.5,j/10, f"{int(j * 10)}", ha='left', fontsize=8)
             # strong weathering
-        lines = [(-0.1, 0.85), (0.57, 0.85)]
+        lines = [(-1, 8.5), (5.7, 8.5)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.05, 0.92, 'strong\nweathering', ha='center', fontsize=7,color = "gray")
+        ax.text(-0.5, 9.2, 'strong\nweathering', ha='center', fontsize=7,color = "gray")
 
-             # Intermediate weathering
-        lines = [(-0.1, 0.65), (0.68, 0.65)]
+                # Intermediate weathering
+        lines = [(-1, 6.5), (6.8, 6.5)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.05, 0.72, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
+        ax.text(-0.5, 7.2, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
 
-         # Weak weathering
-        lines = [(-0.1, 0.5), (0.75, 0.5)]
+            # Weak weathering
+        lines = [(-1, 5), (7.5, 5)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.05, 0.52, 'Weak\nweathering', ha='center', fontsize=7,color = "gray")
+        ax.text(-0.5, 5.2, 'Weak\nweathering', ha='center', fontsize=7,color = "gray")
 
         # Axis labels
-        ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
-        ax.text(-0.05, -0.05, 'CN (CaO + Na₂O)', ha='right', fontsize=14)
-        ax.text(1.05, -0.05, 'K (K₂O)', ha='left', fontsize=14)
+        ax.text(5, 10 + 0.5, 'A (Al₂O₃)', ha='center', fontsize=14)
+        ax.text(-0.5, -0.5, 'CN (CaO + Na₂O)', ha='right', fontsize=14)
+        ax.text(10.05, -0.5, 'K (K₂O)', ha='left', fontsize=14)
 
         # Plot points
         for label, cn, k, a in data:
             x, y = ternary_to_xy(a, cn, k)
             ax.plot(x, y, marker=marker, color=marker_color, markersize=8)
             if show_labels:
-                ax.text(x + 0.01, y + 0.01, label, fontsize=10)
+                ax.text(x + 0.1, y + 0.1, label, fontsize=10)
 
         return fig
 
@@ -318,7 +318,6 @@ elif st.session_state.page == "cia":
 
         except Exception as e:
             st.error(f"Error: {e}")
-
     
 
 # --- Page: Rainfall Plot ---
