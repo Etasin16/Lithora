@@ -229,7 +229,7 @@ elif st.session_state.page == "cia":
             for j in range(11):
               ax.text(-0.15,j/10, f"{int(j * 10)}", ha='left', fontsize=8)
        # strong weathring
-        lines = [(-0.1, 0.85), (0.85, 0.85), (-0.1, 0.85)]
+        lines = [(-0.1, 0.85), (0.55, 0.85)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, marker='.', color='black',lw=1)
 
