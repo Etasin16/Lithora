@@ -188,149 +188,108 @@ elif st.session_state.page == "cia":
     st.button("⬅️ Back to Home", on_click=go_home)
 
     st.markdown("Upload oxide data to compute the CIA index and generate alteration plots.")
-    
+
     import pandas as pd
     import math
-    import base64
-    from io import BytesIO
-    from IPython.display import SVG, display,Image
+    import matplotlib.pyplot as plt
+    import io
     
-    # --- Helper functions ---
     def ternary_to_xy(a, cn, k):
         total = a + cn + k
         a /= total
         cn /= total
         k /= total
         x = 0.5 * (2 * k + cn)
-        y = 0.9 * cn
+        y = (math.sqrt(3) / 2) * cn
         return x, y
-    
-    def svg_point(x, y, width=800, height=520, padding=150, scale=400):
-        px = padding + x * scale
-        py = height - (padding + y * scale)
-        return px, py
-    
-    def generate_svg(points, marker="circle", marker_color="black", add_labels=True):
-        width, height, padding, scale = 800, 620, 150, 400
-        svg = (
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" style="background:white;">'
-            f'<rect width="100%" height="100%" fill="white"/>'
-        )
-    
-        # Triangle outline
-        tri_coords = [(0.0, -0.4), (1.0, -0.4), (0.5, 0.5)]
-        svg += '<polygon points="{}" fill="none" stroke="black" stroke-width="2"/>'.format(
-            ' '.join(f"{svg_point(x, y)[0]},{svg_point(x, y)[1]}" for x, y in tri_coords))
-    
-        # Grid lines
-        for i in range(1, 10):
-            frac = i / 10
-    
-            ax, ay = ternary_to_xy(frac * 100, 100 - frac * 100, 0)
-            bx, by = ternary_to_xy(frac * 100, 0, 100 - frac * 100)
-            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay-0.4)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by-0.4)[1]}" stroke="#ccc"/>'
-    
-            ax, ay = ternary_to_xy(0, frac * 100, 100 - frac * 100)
-            bx, by = ternary_to_xy(100 - frac * 100, frac * 100, 0)
-            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay-0.4)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by-0.4)[1]}" stroke="#ccc"/>'
-    
-            ax, ay = ternary_to_xy(100 - frac * 100, 0, frac * 100)
-            bx, by = ternary_to_xy(0, 100 - frac * 100, frac * 100)
-            svg += f'<line x1="{svg_point(ax, ay)[0]}" y1="{svg_point(ax, ay-0.4)[1]}" x2="{svg_point(bx, by)[0]}" y2="{svg_point(bx, by-0.4)[1]}" stroke="#ccc"/>'
-    
+
+    # --- Plotting function ---
+    def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
+        fig, ax = plt.subplots(figsize=(8, 7))
+        ax.set_xlim(-0.1, 1.1)
+        ax.set_ylim(-0.1, math.sqrt(3)/2 + 0.1)
+        ax.axis('off')
+
+        # Draw triangle
+        triangle = [(0, 0), (1, 0), (0.5, math.sqrt(3)/2), (0, 0)]
+        x_tri, y_tri = zip(*triangle)
+        ax.plot(x_tri, y_tri, 'k-', lw=2)
+
         # Axis labels
-        svg += f'''
-            <text x="{svg_point(0.5, 0.5)[0]}" y="{svg_point(0.5, 0.5)[1] - 10}" text-anchor="middle" font-size="16">A (Al₂O₃)</text>
-            <text x="{svg_point(0.0, -0.4)[0] - 10}" y="{svg_point(0.0, -0.4)[1] + 5}" text-anchor="end" font-size="16">CN (CaO + Na₂O)</text>
-            <text x="{svg_point(1.0, -4.0)[0] + 30}" y="{svg_point(1.0, -0.4)[1] + 5}" text-anchor="start" font-size="16">K (K₂O)</text>
-        '''
-    
-        # CN axis ticks
-        for i in range(0, 11):
-            frac = i / 10
-            x, y = ternary_to_xy(0, frac * 100, (1 - frac) * 100)
-            px, py = svg_point(x, y)
-            svg += f'<line x1="{px - 5}" y1="{py}" x2="{px + 5}" y2="{py}" stroke="black" />'
-            svg += f'<text x="{px + 10}" y="{py + 3}" font-size="10" fill="black">{int(frac * 100)}%</text>'
-    
-        # Plot sample points
-        for row in points:
-            label, cn, k, a = row
-            x, y = ternary_to_xy(cn, k,a)
-            sx, sy = svg_point(x, y)
-            shape_attrs = f'x="{sx}" y="{sy}" width="10" height="10"' if marker == "rect" else (
-                          f'points="{sx},{sy-6} {sx-5},{sy+4} {sx+5},{sy+4}"' if marker == "triangle" else 
-                          f'cx="{sx}" cy="{sy}" r="5"')
-            svg += f'<{marker} {shape_attrs} fill="{marker_color}"/>'
-            if add_labels and label:
-                svg += f'<text x="{sx + 6}" y="{sy - 6}" font-size="12">{label}</text>'
-    
-        svg += '</svg>'
-        return svg
-    
-    def get_svg_download_link(svg, filename="plot.svg"):
-        b64 = base64.b64encode(svg.encode()).decode()
-        href = f'<a href="data:image/svg+xml;base64,{b64}" download="{filename}">📥 Download SVG</a>'
-        return href
-    
+        ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
+        ax.text(-0.05, -0.05, 'CN (CaO + Na₂O)', ha='right', fontsize=14)
+        ax.text(1.05, -0.05, 'K (K₂O)', ha='left', fontsize=14)
+
+        # Plot points
+        for label, cn, k, a in data:
+            x, y = ternary_to_xy(a, cn, k)
+            ax.plot(x, y, marker=marker, color=marker_color, markersize=8)
+            if show_labels:
+                ax.text(x + 0.01, y + 0.01, label, fontsize=10)
+
+        return fig
+
     # --- UI ---
-    st.title("🧪 CIA Ternary Plot Tool")
-    st.markdown("Generate a CIA ternary plot using oxide values: Al₂O₃ (A), CaO + Na₂O (CN), and K₂O (K).")
-    
-    # Sample input section
+    st.title("🧪 CIA Ternary Plot Tool (Matplotlib)")
+    st.markdown("Generate a CIA ternary plot using oxide values: Al₂O₃ (A), CaO + Na₂O (CN), and K₂O (K). Now with PNG/JPG download support.")
+
     with st.form("cia_form"):
+        use_sample_labels = st.checkbox("🔤 Add Sample Labels")
+        labels = st.text_area("Sample Labels (comma-separated)", disabled=not use_sample_labels)
         cn_input = st.text_area("CN (CaO + Na₂O)", placeholder="e.g., 30, 20, 10")
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
         a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
-    
-        marker = st.selectbox("Select Marker Type", ["circle", "rect", "triangle"], index=0)
+
+        marker = st.selectbox("Select Marker Type", ["o", "s", "^"], index=0)
         color = st.color_picker("Pick Marker Color", "#000000")
-    
+
         submit = st.form_submit_button("Generate Plot")
-    
+
     if submit:
         try:
             cn_vals = [float(i.strip()) for i in cn_input.split(",")]
             k_vals = [float(i.strip()) for i in k_input.split(",")]
             a_vals = [float(i.strip()) for i in a_input.split(",")]
-    
+
             if not (len(cn_vals) == len(k_vals) == len(a_vals)):
                 st.error("All input lists must be the same length.")
             else:
                 label_list = [f"S{i+1}" for i in range(len(cn_vals))]
-    
-                plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
-                svg = generate_svg(plot_data, marker=marker, marker_color=color)
-                
+                if use_sample_labels and labels:
+                    label_list = [l.strip() for l in labels.split(",")] or label_list
 
-                # Show plot lower
+                plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
+
+                # Create figure
+                fig = plot_ternary(plot_data, marker=marker, marker_color=color, show_labels=use_sample_labels)
+
+                # Save to BytesIO
+                buf = io.BytesIO()
+                fig.savefig(buf, format='png', bbox_inches='tight')
+                buf.seek(0)
+
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
                 st.subheader("📈 CIA Ternary Plot")
-                import streamlit.components.v1 as components
-                components.html(svg, height=650)
+                st.image(buf, caption="CIA Ternary Diagram")
                 st.markdown("</div>", unsafe_allow_html=True)
-                
-                # Convert SVG to PNG bytes
-                import cairosvg
-                png_bytes = cairosvg.svg2png(bytestring=svg.encode('utf-8'))
-                # Show PNG in Streamlit
-                st.image(png_bytes, caption="CIA Ternary Diagram (PNG)")
-                
-                # SVG download link
-                st.download_button("📥 Download PNG", png_bytes, "cia_plot.png", "image/png")
-    
+
                 # Data Table
                 df = pd.DataFrame({
                     "Label": label_list,
-                    "CN (CaO+Na2O)": cn_vals,
-                    "K (K2O)": k_vals,
-                    "A (Al2O3)": a_vals
+                    "CN (CaO+Na₂O)": cn_vals,
+                    "K (K₂O)": k_vals,
+                    "A (Al₂O₃)": a_vals
                 })
                 st.subheader("📄 Data Table")
                 st.dataframe(df)
+
+                # CSV download
                 csv = df.to_csv(index=False).encode()
                 st.download_button("📥 Download Data (CSV)", csv, "cia_data.csv", "text/csv")
-    
+
+                # PNG download
+                st.download_button("📥 Download Plot (PNG)", buf, "cia_plot.png", "image/png")
+
         except Exception as e:
             st.error(f"Error: {e}")
 
