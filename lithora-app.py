@@ -216,7 +216,10 @@ elif st.session_state.page == "cia":
         ax.plot(x_tri, y_tri, 'k-', lw=2)
 
         # Draw line
-        ax.line((100, 0, 0), (100, 0, 100), linewidth=1.5, color="black", linestyle='--')
+        
+        line = [(0, 0), (0, math.sqrt(3)/2), (0, 0)]
+        x_li, y_li = zip(*line)
+        ax.plot(x_li, y_li, 'k-', lw=2)
 
         # Axis labels
         ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
