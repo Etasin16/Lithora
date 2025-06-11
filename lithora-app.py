@@ -311,7 +311,7 @@ elif st.session_state.page == "cia":
                 st.markdown("</div>", unsafe_allow_html=True)
                 
                 # Convert SVG to PNG bytes
-
+                import cairosvg
                 png_bytes = cairosvg.svg2png(bytestring=svg.encode('utf-8'))
                 # Show PNG in Streamlit
                 st.image(png_bytes, caption="CIA Ternary Diagram (PNG)")
