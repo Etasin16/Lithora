@@ -173,13 +173,22 @@ elif st.session_state.page == "qfl":
             st.subheader("Ternary Diagram")
             fig = plot_basic_ternary(df_result)
             st.pyplot(fig)
-            st.download_button("📥 Download Plot", fig, "RAWplot.png", "image/png")
+
+            buf1 = io.BytesIO()
+            fig.savefig(buf1, format='png', bbox_inches='tight')
+            buf1.seek(0)
+            
+            st.download_button("📥 Download Plot", buf1, "RAWplot.png", "image/png")
     
         with col2:
             st.subheader("Provenance Fields")
             fig2 = plot_provenance_ternary(df_result)
             st.pyplot(fig2)
-            st.download_button("📥 Download Plot", fig2, "Prov_plot.png", "image/png")
+
+            buf2 = io.BytesIO()
+            fig.savefig(buf2, format='png', bbox_inches='tight')
+            buf2.seek(0)
+            st.download_button("📥 Download Plot", buf2, "Prov_plot.png", "image/png")
     
         
 
