@@ -314,7 +314,7 @@ elif st.session_state.page == "cia":
                 from reportlab.graphics import renderPM
 
                 # Load the SVG file and convert it to a drawing
-                drawing = svg2rlg(svg)
+                drawing = svg2rlg("</div>")
 
                 # Render to PNG file
                 IMG=renderPM.drawToFile(drawing, "cia_plot.png", fmt="PNG")
