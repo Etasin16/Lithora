@@ -269,7 +269,7 @@ elif st.session_state.page == "cia":
 
         lineAR = [(0.5375, 0.655), (0.2, 0.62),(0.3525,0.67)]
         x_li, y_li = zip(*lineAR)
-        ax.plot(x_li, y_li, linestyle='_', color='gray',lw=1)
+        ax.plot(x_li, y_li, linestyle='-', color='gray',lw=1)
         ax.text(0.16, 0.58, 'Weathring\ntrend', ha='center', fontsize=6,color = "gray",fontstyle='italic')
 
         # Axis labels
