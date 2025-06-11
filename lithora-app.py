@@ -245,9 +245,9 @@ elif st.session_state.page == "cia":
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
         ax.text(-0.001, 0.52, 'Weak\nweathering', ha='center', fontsize=7,color = "gray")
-        ax.text(0.51, 0.52, 'Average granite', ha='center', fontsize=7,color = "gray")
-        ax.text(0.1, 0.52, 'Plahioclase', ha='center', fontsize=7,color = "gray")
-        ax.text(0.8, 0.52, 'Pk-feldspar', ha='center', fontsize=7,color = "gray")
+        ax.text(0.51, 0.52, 'average granite', ha='center', fontsize=7,color = "gray")
+        ax.text(0.2, 0.52, 'plahioclase', ha='center', fontsize=7,color = "gray")
+        ax.text(0.8, 0.52, 'k-feldspar', ha='center', fontsize=7,color = "gray")
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
