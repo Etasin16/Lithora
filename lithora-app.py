@@ -232,13 +232,19 @@ elif st.session_state.page == "cia":
         lines = [(-0.1, 0.85), (0.57, 0.85)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.08, 0.92, 'strong\nweathering', ha='Center', fontsize=10)
+        ax.text(-0.08, 0.92, 'strong\nweathering', ha='center', fontsize=10,color = "gray")
 
              # Intermediate weathering
         lines = [(-0.1, 0.65), (0.68, 0.65)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.08, 0.72, 'Intermediate\nweathering', ha='Center', fontsize=10)
+        ax.text(-0.08, 0.72, 'Intermediate\nweathering', ha='center', fontsize=10,color = "gray")
+
+         # Weak weathering
+        lines = [(-0.1, 0.5), (0.68, 0.85)]
+        x_li, y_li = zip(*lines)
+        ax.plot(x_li, y_li, linestyle='--', color='gray')
+        ax.text(-0.08, 0.52, 'Weak\nweathering', ha='center', fontsize=10,color = "gray")
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
