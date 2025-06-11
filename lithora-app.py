@@ -303,7 +303,7 @@ elif st.session_state.page == "cia":
                 svg = generate_svg(plot_data, marker=marker, marker_color=color)
                 # Convert SVG to PNG
                 import cairosvg
-                IMG = cairosvg.svg2png(url= svg, write_to='output.png')
+                IMG = cairosvg.svg2png(url= svg, write_to='cia_plot.png')
 
                 # Show plot lower
                 st.markdown("<div style='margin-top:40px;'>", unsafe_allow_html=True)
@@ -312,10 +312,11 @@ elif st.session_state.page == "cia":
                 components.html(svg, height=650)
 
                 st.markdown("</div>", unsafe_allow_html=True)
+                display(Image(filename='cia_plot.png'))
                 
 
                 # SVG download link
-                st.download_button("📥 Download Plot",svg,"cia_plot.svg")
+                st.download_button("📥 Download Plot",IMG,"cia_plot.png")
     
                 # Data Table
                 df = pd.DataFrame({
