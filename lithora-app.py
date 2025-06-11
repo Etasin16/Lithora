@@ -222,10 +222,10 @@ elif st.session_state.page == "cia":
 
         # Mark Lavel and grid
         for i in range(11):
-            fcn = 10/i
+            fcn = i/10
             x_m,y_m = zip((-0.1,(math.sqrt(3)/2)-fcn ), (-0.1, (math.sqrt(3)/2)))
             ax.plot(x_m, y_m, marker='x', color='black',lw=0)
-            ax.text(-0.2,(math.sqrt(3)/2)-fcn , f"{int(fcn * 100)}", ha='left', fontsize=8)
+            ax.text(x_m,y_m , f"{int(fcn * 100)}", ha='left', fontsize=8)
 
         # Axis labels
         ax.text(0.5, math.sqrt(3)/2 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
