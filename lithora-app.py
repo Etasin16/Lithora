@@ -239,8 +239,8 @@ elif st.session_state.page == "cia":
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
         ax.text(-0.001, 0.67, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
-        ax.text(0.3, 0.72, 'Smectite', ha='center', fontsize=7,color = "gray")
-        ax.text(0.62, 0.72, 'Illite\n   Muscovite', ha='right', fontsize=7,color = "gray")
+        ax.text(0.3, 0.77, 'Smectite', ha='center', fontsize=7,color = "gray")
+        ax.text(0.65, 0.77, 'Illite\n   Muscovite', ha='left', fontsize=7,color = "gray")
 
          # Weak weathering
         lines = [(-0.1, 0.5), (0.75, 0.5)]
