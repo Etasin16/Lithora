@@ -254,7 +254,7 @@ elif st.session_state.page == "cia":
         # Plot points
         for label, cn, k, a in data:
             x, y = ternary_to_xy(a, cn, k)
-            ax.plot(x, y, marker=marker, color=marker_color, markersize=8)
+            ax.plot(x, y, marker=marker, color=marker_color, markersize=2)
             if show_labels:
                 ax.text(x + 0.01, y + 0.01, label, fontsize=10)
 
@@ -268,7 +268,7 @@ elif st.session_state.page == "cia":
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
         a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
 
-        marker = st.selectbox("Select Marker Type", ["o", "s", "^"], index=0)
+        marker = st.selectbox("Select Marker Type", ["o", "s", "^","H",], index=0)
         color = st.color_picker("Pick Marker Color", "#000000")
 
         submit = st.form_submit_button("Generate Plot")
