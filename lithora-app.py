@@ -262,7 +262,7 @@ elif st.session_state.page == "cia":
         ax.text(0.8, 0.52, 'k-feldspar', ha='center', fontsize=7,color = "gray")
 
           # Arrows
-        plt.arrow(0.28, 0.52, 0.157, 0.3, head_width=0.01, head_length=0.01, fc='black', ec='black')
+        plt.arrow(0.28, 0.52, 0.156, 0.3, head_width=0.01, head_length=0.01, fc='black', ec='red')
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
@@ -275,6 +275,7 @@ elif st.session_state.page == "cia":
             ax.plot(x, y, marker=marker, color=marker_color, markersize=5)
             if show_labels:
                 ax.text(x + 0.01, y + 0.01, label, fontsize=10)
+        ax.legend()
 
         return fig
 
