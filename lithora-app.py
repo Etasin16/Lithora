@@ -49,11 +49,11 @@ elif st.session_state.page == "qfl":
     # --- Sidebar for input mode ---
     mode = st.sidebar.radio("Select Input Mode", ["📝 Manual Entry", "📁 Upload CSV"])
     
-    # --- Helper to clean data ---
+    # ---Pre-prossessing ---
     def parse_input_list(data_str):
         return [float(i.strip()) for i in data_str.split(",") if i.strip() != ""]
     
-    # --- Compute and return QFL DataFrame ---
+    # --- Calculate and return QFL DataFrame ---
     def compute_qfl(quartz, feldspar, lithics):
         df = pd.DataFrame({'Quartz': quartz, 'Feldspar': feldspar, 'Lithics': lithics})
         df['Total'] = df['Quartz'] + df['Feldspar'] + df['Lithics']
@@ -122,7 +122,7 @@ elif st.session_state.page == "qfl":
     
         return fig
     
-    # --- CSV Download helper ---
+    # --- CSV Download ---
     def to_csv(df):
         return df.to_csv(index=False).encode('utf-8')
     
@@ -166,19 +166,22 @@ elif st.session_state.page == "qfl":
     if df_result is not None:
         st.subheader("📊 Computed QFL Table")
         st.dataframe(df_result)
+        st.download_button("📥 Download CSV", to_csv(df_result), "QFL_data.csv", "text/csv")
     
         col1, col2 = st.columns(2)
         with col1:
             st.subheader("Ternary Diagram")
             fig = plot_basic_ternary(df_result)
             st.pyplot(fig)
+            st.download_button("📥 Download Plot", fig, "RAWplot.png", "image/png")
     
         with col2:
-            st.subheader("With Provenance Fields")
+            st.subheader("Provenance Fields")
             fig2 = plot_provenance_ternary(df_result)
             st.pyplot(fig2)
+            st.download_button("📥 Download Plot", fig2, "Prov_plot.png", "image/png")
     
-        st.download_button("📥 Download CSV", to_csv(df_result), "QFL_data.csv", "text/csv")
+        
 
 # --- Page: CIA Analysis ---
 elif st.session_state.page == "cia":
