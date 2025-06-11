@@ -228,10 +228,17 @@ elif st.session_state.page == "cia":
 
             for j in range(11):
               ax.text(-0.15,j/10, f"{int(j * 10)}", ha='left', fontsize=8)
-       # strong weathring
+            # strong weathering
         lines = [(-0.1, 0.85), (0.57, 0.85)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
+        ax.text(-0.08, 0.92, 'strong\nweathering', ha='Center', fontsize=10)
+
+             # Intermediate weathering
+        lines = [(-0.1, 0.65), (0.68, 0.65)]
+        x_li, y_li = zip(*lines)
+        ax.plot(x_li, y_li, linestyle='--', color='gray')
+        ax.text(-0.08, 0.72, 'Intermediate\nweathering', ha='Center', fontsize=10)
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
