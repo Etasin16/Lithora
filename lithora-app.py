@@ -325,6 +325,8 @@ elif st.session_state.page == "cia":
                 st.subheader("📈 CIA Ternary Plot")
                 st.image(buf, caption="CIA Ternary Diagram")
                 st.markdown("</div>", unsafe_allow_html=True)
+                 # PNG download
+                st.download_button("📥 Download Plot (PNG)", buf, "cia_plot.png", "image/png")
 
                 # Data Table
                 df = pd.DataFrame({
@@ -340,8 +342,7 @@ elif st.session_state.page == "cia":
                 csv = df.to_csv(index=False).encode()
                 st.download_button("📥 Download Data (CSV)", csv, "cia_data.csv", "text/csv")
 
-                # PNG download
-                st.download_button("📥 Download Plot (PNG)", buf, "cia_plot.png", "image/png")
+               
 
         except Exception as e:
             st.error(f"Error: {e}")
