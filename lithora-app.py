@@ -232,13 +232,13 @@ elif st.session_state.page == "cia":
         lines = [(-0.1, 0.85), (0.57, 0.85)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.001, 0.92, 'strong\nweathering', ha='center', fontsize=7,color = "gray")
+        ax.text(-0.001, 0.87, 'strong\nweathering', ha='center', fontsize=7,color = "gray")
 
              # Intermediate weathering
         lines = [(-0.1, 0.65), (0.68, 0.65)]
         x_li, y_li = zip(*lines)
         ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.001, 0.72, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
+        ax.text(-0.001, 0.67, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
 
          # Weak weathering
         lines = [(-0.1, 0.5), (0.75, 0.5)]
@@ -268,7 +268,7 @@ elif st.session_state.page == "cia":
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
         a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
 
-        marker = st.selectbox("Select Marker Type", ["o", "s", "^"], index=0)
+        marker = st.selectbox("Select Marker Type", ["o", "s", "^"], index=-1)
         color = st.color_picker("Pick Marker Color", "#000000")
 
         submit = st.form_submit_button("Generate Plot")
