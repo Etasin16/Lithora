@@ -226,8 +226,8 @@ elif st.session_state.page == "cia":
             x_m,y_m = zip((-0.1,1-fcn ), (-0.1, 1))
             ax.plot(x_m, y_m, marker='x', color='black',lw=0)
 
-            for j in range(0,1,(1/10)):
-              ax.text(-0.15,j, f"{int(fcn * 100)}", ha='left', fontsize=8)
+            for j in range(11):
+              ax.text(-0.15,j/10, f"{int(fcn * 100)}", ha='left', fontsize=8)
 
         # Axis labels
         ax.text(0.5, 1 + 0.05, 'A (Al₂O₃)', ha='center', fontsize=14)
