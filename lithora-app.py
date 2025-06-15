@@ -278,7 +278,7 @@ elif st.session_state.page == "cia":
         ax.text(1.05, -0.05, 'K (K₂O)', ha='left', fontsize=14)
 
         # Plot points
-        for label, cn, k, a in data:
+        for label, a, cn, k in data:
             x, y = ternary_to_xy(a, cn, k)
             ax.plot(x, y, marker=marker, color=marker_color, markersize=5)
             if show_labels:
@@ -291,9 +291,10 @@ elif st.session_state.page == "cia":
     st.title("🧪 CIA Ternary Plot Tool")
 
     with st.form("cia_form"):
+        a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
         cn_input = st.text_area("CN (CaO + Na₂O)", placeholder="e.g., 30, 20, 10")
         k_input = st.text_area("K (K₂O)", placeholder="e.g., 10, 30, 40")
-        a_input = st.text_area("A (Al₂O₃)", placeholder="e.g., 60, 50, 50")
+       
 
         marker = st.selectbox("Select Marker Type", ["o", "s", "^","H",], index=0)
         color = st.color_picker("Pick Marker Color", "#000000")
@@ -302,16 +303,17 @@ elif st.session_state.page == "cia":
 
     if submit:
         try:
+            a_vals = [float(i.strip()) for i in a_input.split(",")]
             cn_vals = [float(i.strip()) for i in cn_input.split(",")]
             k_vals = [float(i.strip()) for i in k_input.split(",")]
-            a_vals = [float(i.strip()) for i in a_input.split(",")]
+            
 
             if not (len(cn_vals) == len(k_vals) == len(a_vals)):
                 st.error("All input lists must be the same length.")
             else:
                 label_list = [f"S{i+1}" for i in range(len(cn_vals))]
 
-                plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
+                plot_data = list(zip(label_list, a_vals, cn_vals, k_vals))
 
                 # Create figure
                 fig = plot_ternary(plot_data, marker=marker, marker_color=color)
@@ -331,9 +333,9 @@ elif st.session_state.page == "cia":
                 # Data Table
                 df = pd.DataFrame({
                     "Label": label_list,
+                    "A (Al₂O₃)": a_vals,
                     "CN (CaO+Na₂O)": cn_vals,
-                    "K (K₂O)": k_vals,
-                    "A (Al₂O₃)": a_vals
+                    "K (K₂O)": k_vals
                 })
                 st.subheader("📄 Data Table")
                 st.dataframe(df)
