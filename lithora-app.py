@@ -278,8 +278,8 @@ elif st.session_state.page == "cia":
         ax.text(1.05, -0.05, 'K (K₂O)', ha='left', fontsize=14)
 
         # Plot points
-        for label, a, cn, k in data:
-            x, y = ternary_to_xy(a, cn, k)
+        for label, cn, a, k in data:
+            x, y = ternary_to_xy(cn, a, k)
             ax.plot(x, y, marker=marker, color=marker_color, markersize=5)
             if show_labels:
                 ax.text(x + 0.01, y + 0.01, label, fontsize=10)
