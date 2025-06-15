@@ -214,7 +214,7 @@ elif st.session_state.page == "cia":
         return x, y
 
     # --- Plotting function ---
-    def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
+    def plot_ternary(data, marker="o", marker_color="black", show_labels=True):
         fig, ax = plt.subplots(figsize=(8, 7))
         ax.set_xlim(-0.1, 1.1)
         ax.set_ylim(-0.1, 1 + 0.1)
