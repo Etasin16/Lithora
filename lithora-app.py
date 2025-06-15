@@ -209,8 +209,8 @@ elif st.session_state.page == "cia":
         a /= total
         cn /= total
         k /= total
-        x = 0.5 * (2 * k + cn)
-        y = (1) * cn
+        x = 0.5 * (2 * k + a)
+        y = (1) * a
         return x, y
 
     # --- Plotting function ---
