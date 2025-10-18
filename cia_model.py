@@ -14,7 +14,7 @@ def ternary_to_xy(a, cn, k):
     return x, y
 
 # --- Plotting function ---
-def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
+def plot_ternary(data, marker="o", marker_color="black"):
     fig, ax = plt.subplots(figsize=(8, 7))
     ax.set_xlim(-1, 11)
     ax.set_ylim(-1, 10 + 1)
@@ -65,8 +65,8 @@ def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
     for  cn, k, a in data:
         x, y = ternary_to_xy(a, cn, k)
         ax.plot(x, y, marker=marker, color=marker_color, markersize=8)
-        if show_labels:
-            ax.text(x + 0.1, y + 0.1, fontsize=10)
+      #  if show_labels:
+       #     ax.text(x + 0.1, y + 0.1, fontsize=10)
 
     return fig
 
