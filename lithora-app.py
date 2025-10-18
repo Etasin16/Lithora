@@ -260,7 +260,7 @@ elif st.session_state.page == "cia":
         ax.text(-0.001, 0.52, 'Weak\nweathering', ha='center', fontsize=7,color = "black")
         ax.text(0.51, 0.52, 'Average granite', ha='center', fontsize=7,color = "black")
         ax.text(0.2, 0.52, 'Plahioclase', ha='center', fontsize=7,color = "black")
-        ax.text(0.8, 0.52, 'K-feldspar', ha='center', fontsize=7,color = "blacky")
+        ax.text(0.8, 0.52, 'K-feldspar', ha='center', fontsize=7,color = "black")
         ax.text(0.35, 0.46, 'Average gabbro', ha='center', fontsize=7,color = "black")
 
           # Arrows & Lines
