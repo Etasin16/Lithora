@@ -41,20 +41,20 @@ def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
         # strong weathering
     lines = [(-1, 8.5), (5.7, 8.5)]
     x_li, y_li = zip(*lines)
-    ax.plot(x_li, y_li, linestyle='--', color='gray')
-    ax.text(-0.5, 9.2, 'strong\nweathering', ha='center', fontsize=7,color = "gray")
+    ax.plot(x_li, y_li, linestyle='--', color='black')
+    ax.text(-0.5, 9.2, 'strong\nweathering', ha='center', fontsize=7,color = "black")
 
             # Intermediate weathering
     lines = [(-1, 6.5), (6.8, 6.5)]
     x_li, y_li = zip(*lines)
-    ax.plot(x_li, y_li, linestyle='--', color='gray')
-    ax.text(-0.5, 7.2, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
+    ax.plot(x_li, y_li, linestyle='--', color='black')
+    ax.text(-0.5, 7.2, 'Intermediate\nweathering', ha='center', fontsize=7,color = "black")
 
         # Weak weathering
     lines = [(-1, 5), (7.5, 5)]
     x_li, y_li = zip(*lines)
-    ax.plot(x_li, y_li, linestyle='--', color='gray')
-    ax.text(-0.5, 5.2, 'Weak\nweathering', ha='center', fontsize=7,color = "gray")
+    ax.plot(x_li, y_li, linestyle='--', color='black')
+    ax.text(-0.5, 5.2, 'Weak\nweathering', ha='center', fontsize=7,color = "black")
 
     # Axis labels
     ax.text(5, 10 + 0.5, 'A (Al₂O₃)', ha='center', fontsize=14)
@@ -62,11 +62,11 @@ def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
     ax.text(10.05, -0.5, 'K (K₂O)', ha='left', fontsize=14)
 
     # Plot points
-    for label, cn, k, a in data:
+    for  cn, k, a in data:
         x, y = ternary_to_xy(a, cn, k)
         ax.plot(x, y, marker=marker, color=marker_color, markersize=8)
         if show_labels:
-            ax.text(x + 0.1, y + 0.1, label, fontsize=10)
+            ax.text(x + 0.1, y + 0.1, fontsize=10)
 
     return fig
 
@@ -93,8 +93,9 @@ if submit:
             st.error("All input lists must be the same length.")
         else:
             label_list = [f"S{i+1}" for i in range(len(cn_vals))]
+            #plot_data = list(zip(label_list,cn_vals, k_vals, a_vals)) with S1,S2
 
-            plot_data = list(zip(label_list, cn_vals, k_vals, a_vals))
+            plot_data = list(zip(cn_vals, k_vals, a_vals))
 
             # Create figure
             fig = plot_ternary(plot_data, marker=marker, marker_color=color)
