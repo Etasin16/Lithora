@@ -214,7 +214,7 @@ elif st.session_state.page == "cia":
         return x, y
 
     # --- Plotting function ---
-    def plot_ternary(data, marker="o", marker_color="black", show_labels=True):
+   def plot_ternary(data, marker="o", marker_color="black", show_labels=False):
         fig, ax = plt.subplots(figsize=(8, 7))
         ax.set_xlim(-0.1, 1.1)
         ax.set_ylim(-0.1, 1 + 0.1)
@@ -241,27 +241,27 @@ elif st.session_state.page == "cia":
             # strong weathering
         lines = [(-0.1, 0.85), (0.57, 0.85)]
         x_li, y_li = zip(*lines)
-        ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.001, 0.87, 'Strong\nweathering', ha='center', fontsize=7,color = "gray")
-        ax.text(0.6, 1, 'Kaolinite', ha='center', fontsize=7,color = "gray")
+        ax.plot(x_li, y_li, linestyle='--', color='black')
+        ax.text(-0.001, 0.87, 'Strong\nweathering', ha='center', fontsize=7,color = "black")
+        ax.text(0.6, 1, 'Kaolinite', ha='center', fontsize=7,color = "black")
 
              # Intermediate weathering
         lines = [(-0.1, 0.65), (0.68, 0.65)]
         x_li, y_li = zip(*lines)
-        ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.001, 0.67, 'Intermediate\nweathering', ha='center', fontsize=7,color = "gray")
-        ax.text(0.3, 0.77, 'Smectite', ha='center', fontsize=7,color = "gray")
-        ax.text(0.63, 0.77, 'Illite\n \n  Muscovite', ha='left', fontsize=7,color = "gray")
+        ax.plot(x_li, y_li, linestyle='--', color='black')
+        ax.text(-0.001, 0.67, 'Intermediate\nweathering', ha='center', fontsize=7,color = "black")
+        ax.text(0.3, 0.77, 'Smectite', ha='center', fontsize=7,color = "black")
+        ax.text(0.63, 0.77, 'Illite\n \n  Muscovite', ha='left', fontsize=7,color = "black")
 
          # Weak weathering
         lines = [(-0.1, 0.5), (0.75, 0.5)]
         x_li, y_li = zip(*lines)
-        ax.plot(x_li, y_li, linestyle='--', color='gray')
-        ax.text(-0.001, 0.52, 'Weak\nweathering', ha='center', fontsize=7,color = "gray")
-        ax.text(0.51, 0.52, 'Average granite', ha='center', fontsize=7,color = "gray")
-        ax.text(0.2, 0.52, 'Plahioclase', ha='center', fontsize=7,color = "gray")
-        ax.text(0.8, 0.52, 'K-feldspar', ha='center', fontsize=7,color = "gray")
-        ax.text(0.35, 0.46, 'Average gabbro', ha='center', fontsize=7,color = "gray")
+        ax.plot(x_li, y_li, linestyle='--', color='black')
+        ax.text(-0.001, 0.52, 'Weak\nweathering', ha='center', fontsize=7,color = "black")
+        ax.text(0.51, 0.52, 'Average granite', ha='center', fontsize=7,color = "black")
+        ax.text(0.2, 0.52, 'Plahioclase', ha='center', fontsize=7,color = "black")
+        ax.text(0.8, 0.52, 'K-feldspar', ha='center', fontsize=7,color = "blacky")
+        ax.text(0.35, 0.46, 'Average gabbro', ha='center', fontsize=7,color = "black")
 
           # Arrows & Lines
         plt.arrow(0.28, 0.52, 0.145, 0.3, head_width=0.01, head_length=0.01, fc='red', ec='red')
