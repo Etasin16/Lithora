@@ -41,8 +41,8 @@ def plot_ternary(data, marker="o", marker_color="black"):
         # strong weathering
     lines = [(-1, 8.5), (5.7, 8.5)]
     x_li, y_li = zip(*lines)
-    ax.plot(x_li, y_li, linestyle='--', color='black')
-    ax.text(-0.5, 9.2, 'strong\nweathering', ha='center', fontsize=7,color = "black")
+    ax.plot(x_li, y_li, 'k-', lw=1)
+    ax.text(-0.5, 9.2, 'strong\nweathering', ha='center', fontsize=7,c = "k")
 
             # Intermediate weathering
     lines = [(-1, 6.5), (6.8, 6.5)]
@@ -92,7 +92,7 @@ if submit:
         if not (len(cn_vals) == len(k_vals) == len(a_vals)):
             st.error("All input lists must be the same length.")
         else:
-            label_list = [f"S{i+1}" for i in range(len(cn_vals))]
+            
             #plot_data = list(zip(label_list,cn_vals, k_vals, a_vals)) with S1,S2
 
             plot_data = list(zip(cn_vals, k_vals, a_vals))
@@ -111,6 +111,7 @@ if submit:
             st.markdown("</div>", unsafe_allow_html=True)
 
             # Data Table
+            label_list = [f"S{i+1}" for i in range(len(cn_vals))]
             df = pd.DataFrame({
                 "Label": label_list,
                 "CN (CaO+Na₂O)": cn_vals,
